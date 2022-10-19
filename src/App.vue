@@ -13,6 +13,11 @@ export default {
       answer3: "",
       sortArray: 0,
       answer4: [],
+      addArrayOne: "",
+      addArrayTwo: "",
+      arrayOne: [],
+      arrayTwo: [],
+      answer5: [],
     };
   },
   methods: {
@@ -66,6 +71,71 @@ export default {
           }
         }
       }
+    },
+    addNbArrayOne() {
+      this.arrayOne.push(this.addArrayOne);
+    },
+    addNbArrayTwo() {
+      this.arrayTwo.push(this.addArrayTwo);
+    },
+    resultExo5() {
+      this.answer5 = [...this.arrayOne, ...this.arrayTwo];
+      const answer5 = this.answer5;
+
+      function swap(answer5, leftIndex, rightIndex) {
+        let temp = answer5[leftIndex];
+        answer5[leftIndex] = answer5[rightIndex];
+        answer5[rightIndex] = temp;
+      }
+      function partition(answer5, left, right) {
+        let pivot = answer5[Math.floor((right + left) / 2)], //middle element
+          i = left, //left pointer
+          j = right; //right pointer
+        while (i <= j) {
+          while (answer5[i] < pivot) {
+            i++;
+          }
+          while (answer5[j] > pivot) {
+            j--;
+          }
+          if (i <= j) {
+            swap(answer5, i, j); //sawpping two elements
+            i++;
+            j--;
+          }
+        }
+        return i;
+      }
+
+      function quickSort(answer5, left, right) {
+        let index;
+        if (answer5.length > 1) {
+          index = partition(answer5, left, right); //index returned from partition
+          if (left < index - 1) {
+            //more elements on the left side of the pivot
+            quickSort(answer5, left, index - 1);
+          }
+          if (index < right) {
+            //more elements on the right side of the pivot
+            quickSort(answer5, index, right);
+          }
+        }
+        return answer5;
+      }
+      // first call to quick sort
+      this.answer5 = quickSort(answer5, 0, answer5.length - 1);
+
+      Array.prototype.getUnique = function () {
+        var uniques = [];
+        for (var i = 0, l = this.length; i < l; ++i) {
+          if (this.lastIndexOf(this[i]) == this.indexOf(this[i])) {
+            uniques.push(this[i]);
+          }
+        }
+        return uniques;
+      };
+
+      this.answer5 = answer5.getUnique();
     },
   },
   computed: {
@@ -142,6 +212,34 @@ export default {
         <p>The answer is : {{ answer4 }}</p>
       </div>
     </div>
+
+    <div class="main__exo5">
+      <h2>
+        Write a function that will accept the two sorted arrays and merge them.
+        Moreover, any number that appears in both arrays should be removed from
+        the resulting array.
+      </h2>
+      <div class="form__sortArrayOne">
+        <label> Add {{ addArrayOne }} in the first Array </label>
+        <input class="multiples" type="number" v-model="addArrayOne" />
+        <button @click="addNbArrayOne">Submit</button>
+      </div>
+      <div class="form__sortArrayTwo">
+        <label> Add {{ addArrayTwo }} in the second Array </label>
+        <input class="multiples" type="number" v-model="addArrayTwo" />
+        <button @click="addNbArrayTwo">Submit</button>
+      </div>
+      <p>
+        {{ arrayOne }}
+      </p>
+      <p>
+        {{ arrayTwo }}
+      </p>
+      <button @click="resultExo5">Merge</button>
+      <div class="form__answer">
+        <p>The answer is : {{ answer5 }}</p>
+      </div>
+    </div>
   </main>
 </template>
 
@@ -155,7 +253,8 @@ export default {
 .main__exo1,
 .main__exo2,
 .main__exo3,
-.main__exo4 {
+.main__exo4,
+.main__exo5 {
   display: flex;
   flex-direction: column;
   gap: 20px;
