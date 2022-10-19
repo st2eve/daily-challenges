@@ -126,8 +126,8 @@ export default {
       this.answer5 = quickSort(answer5, 0, answer5.length - 1);
 
       Array.prototype.getUnique = function () {
-        var uniques = [];
-        for (var i = 0, l = this.length; i < l; ++i) {
+        let uniques = [];
+        for (let i = 0, l = this.length; i < l; ++i) {
           if (this.lastIndexOf(this[i]) == this.indexOf(this[i])) {
             uniques.push(this[i]);
           }
